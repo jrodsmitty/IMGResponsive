@@ -43,7 +43,7 @@
 				{
 					path = imageNameParts[0] + '-' + size + '.' + imageNameParts[1];
 				}
-				$(el).attr('src', path).attr('alt', path);
+				$(el).attr('src', path);
 			}
 			return this;
 		};

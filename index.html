@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>imgResponsive.js</title>
+	<style>
+			body { margin: 0; text-align:center; }
+			
+			img { width:48%; height:auto; }
+
+			@media screen and (min-width: 0px) {
+				div:before { display:block; content: "Handheld"; }
+			}
+
+			@media screen and (min-width: 768px) {
+				div:before { display:block; content: "Tablet"; }
+			}
+
+			@media screen and (min-width: 1440px) {
+				div:before { display:block; content: "Desktop"; }
+			}
+		</style>
+</head>
+<body>
+	<div></div>
+	<img src="blank.gif" data-image="image.png" alt="blank" class="instance1" />
+	<img src="blank.gif" data-image="image2.png" alt="blank" class="instance2" />
+
+	<script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="js/imgResponsive.min.js"></script>
+	<script>
+		$(function() {
+
+			// use default breakpoints
+			$('.instance1').imgResponsive();
+
+			$('.instance2').imgResponsive({
+				breakpoints:
+				[{
+					label: 'handheld',
+					enter: 0,
+					exit: 767
+				},{
+					label: 'other',
+					enter: 768,
+					exit: 10000
+				}]
+			});
+		});
+	</script>
+</body>
+</html>

@@ -23,14 +23,14 @@
 			$(function() {
 
 				/*
-					1. Basic use does retina detection, and swaps image out for @2 version.
+					1. Basic use does retina detection, and swaps image out for @2x version.
 				*/		
 				$('.instance1').imgResponsive();
 
 				/*
 					2. You can pass an array of breakpoint objects (in jRespond syntax) to swap out image versions at various times.
 				 	So you can have a tiny image for handheld, larger for tablet, and much larger for desktop, etc.
-				 	Each of these versions will load an @2 version if the device is retina, also.
+				 	Each of these versions will load an @2x version if the device is retina, also.
 				*/
 				$('.instance2').imgResponsive({
 					breakpoints: [{

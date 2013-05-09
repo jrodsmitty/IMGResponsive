@@ -3,46 +3,53 @@
 	$(function() {
 		$.fn.imgResponsive = function(options) {
 			var defaults = {
-				breakpoints: [{
-						label: 'handheld',
-						enter: 0,
-						exit: 767
-					},{
-						label: 'tablet',
-						enter: 768,
-						exit: 1439
-					},{
-						label: 'desktop',
-						enter: 1440,
-						exit: 10000
-					}]
-				};
+				breakpoints:[]
+			};
 			var elems = this;
 			var settings = $.extend(defaults, options);
 			var isRetina = window.devicePixelRatio > 1;		    
 		    var jRes = jRespond(settings.breakpoints);
-			for (var x = 0; x < settings.breakpoints.length; x++) {
-				var newObj = {
-					breakpoint: settings.breakpoints[x].label,
-					enter: function() {
-						elems.each(function() {
-							setImageSrc($(this), jRes.getBreakpoint());
-						});								
-					}
-				};
-		    	jRes.addFunc(newObj);
-		    }
+			
+			// if no breakpoints, just check for retina or not
+			if (settings.breakpoints.length > 0) {
+				for (var x = 0; x < settings.breakpoints.length; x++) {
+					var newObj = {
+						breakpoint: settings.breakpoints[x].label,
+						enter: function() {
+							elems.each(function() {
+								setImageSrc($(this), jRes.getBreakpoint());
+							});								
+						}
+					};
+					jRes.addFunc(newObj);
+				}
+			}
+			else {
+				setImageSrc($(this));
+			}
+			
 			function setImageSrc(el, size) {
 				var imageNameParts = $(el).data('image').split('.');
 				var path = '';
-				var retinaImageSrc = imageNameParts[0] + '-' + size + '-x2.' + imageNameParts[1];
+				
+				// if no breakpoint size, default to image name / image name @2
 				if (isRetina) {
-					path = retinaImageSrc;
+					if (size == null) {
+						path = imageNameParts[0] + '@2x.' + imageNameParts[1];
+					}
+					else {
+						path = imageNameParts[0] + '-' + size +  '@2x.' + imageNameParts[1];
+					}
 				}
-				else
-				{
-					path = imageNameParts[0] + '-' + size + '.' + imageNameParts[1];
+				else {
+					if (size == null) {
+						path = imageNameParts[0] + '.' + imageNameParts[1];
+					}
+					else {
+						path = imageNameParts[0] + '-' + size +  '.' + imageNameParts[1];
+					}
 				}
+				console.log(path);
 				$(el).attr('src', path);
 			}
 			return this;
@@ -227,8 +234,9 @@
 
 			// if there is a change speed up the timer and fire the returnBreakpoint function
 			if (w !== resizeW) {
-				resizeTmrSpd = resizeTmrFast;
-
+				//resizeTmrSpd = resizeTmrFast;
+				resizeTmrSpd = resizeTmrSlow;
+				
 				returnBreakpoint(w);
 
 			// otherwise keep on keepin' on

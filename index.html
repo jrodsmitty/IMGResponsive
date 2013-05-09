@@ -5,49 +5,63 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<title>imgResponsive.js</title>
 	<style>
-			body { margin: 0; text-align:center; }
-			
-			img { width:48%; height:auto; }
-
-			@media screen and (min-width: 0px) {
-				div:before { display:block; content: "Handheld"; }
-			}
-
-			@media screen and (min-width: 768px) {
-				div:before { display:block; content: "Tablet"; }
-			}
-
-			@media screen and (min-width: 1440px) {
-				div:before { display:block; content: "Desktop"; }
-			}
-		</style>
+		body { margin: 0; text-align:center; }
+		
+		img { width:100%; height:auto;}
+		
+	</style>
 </head>
 <body>
-	<div></div>
-	<img src="blank.gif" data-image="images/image.png" alt="text" class="instance1" />
-	<img src="blank.gif" data-image="images/image2.png" alt="text" class="instance2" />
+	<img src="img/blank.gif" data-image="img/bunny.png" alt="text" class="instance1" />
+	<img src="img/blank.gif" data-image="img/flowers.png" alt="text" class="instance2" />
+	<img src="img/blank.gif" data-image="img/bunny.png" alt="text" class="instance3" />
 
-	<script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
-	<script src="js/imgResponsive.min.js"></script>
+	<script src="js/vendor/jquery-1.9.1.min.js"></script>
+	<script src="js/imgResponsive.js"></script>
 	<script>
-		$(function() {
+		(function($) {
+			$(function() {
 
-			// use default breakpoints
-			$('.instance1').imgResponsive();
+				/*
+					1. Basic use does retina detection, and swaps image out for @2 version.
+				*/		
+				$('.instance1').imgResponsive();
 
-			$('.instance2').imgResponsive({
-				breakpoints:
-				[{
-					label: 'handheld',
-					enter: 0,
-					exit: 767
-				},{
-					label: 'other',
-					enter: 768,
-					exit: 10000
-				}]
+				/*
+					2. You can pass an array of breakpoint objects (in jRespond syntax) to swap out image versions at various times.
+				 	So you can have a tiny image for handheld, larger for tablet, and much larger for desktop, etc.
+				 	Each of these versions will load an @2 version if the device is retina, also.
+				*/
+				$('.instance2').imgResponsive({
+					breakpoints: [{
+						label: 'handheld',
+						enter: 0,
+						exit: 767
+					},{
+						label: 'tablet',
+						enter: 768,
+						exit: 1439
+					},{
+						label: 'desktop',
+						enter: 1440,
+						exit: 10000
+					}]
+				});
+				
+				$('.instance3').imgResponsive({
+					breakpoints:
+					[{
+						label: 'handheld',
+						enter: 0,
+						exit: 767
+					},{
+						label: 'other',
+						enter: 768,
+						exit: 10000
+					}]
+				});
 			});
-		});
+		})(jQuery);
 	</script>
 </body>
 </html>

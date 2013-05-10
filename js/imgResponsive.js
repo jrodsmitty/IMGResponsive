@@ -49,7 +49,6 @@
 						path = imageNameParts[0] + '-' + size +  '.' + imageNameParts[1];
 					}
 				}
-				console.log(path);
 				$(el).attr('src', path);
 			}
 			return this;

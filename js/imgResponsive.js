@@ -1,4 +1,4 @@
-/*! imgResponsive.js v 0.1 | Author: Jarrod Smith, 2013 */
+/*! imgResponsive.js v 0.2 | Author: Jarrod Smith, 2013 */
 (function($) {	
 	$(function() {
 		$.fn.imgResponsive = function(options) {
@@ -7,7 +7,7 @@
 			};
 			var elems = this;
 			var settings = $.extend(defaults, options);
-			var isRetina = window.devicePixelRatio > 1;		    
+			var isRetina = window.devicePixelRatio > 1.4;
 		    var jRes = jRespond(settings.breakpoints);
 			
 			// if no breakpoints, just check for retina or not
@@ -29,31 +29,58 @@
 			}
 			
 			function setImageSrc(el, size) {
-				var imageNameParts = $(el).data('image').split('.');
-				var path = '';
-				
-				// if no breakpoint size, default to image name / image name @2
-				if (isRetina) {
-					if (size == null) {
-						path = imageNameParts[0] + '@2x.' + imageNameParts[1];
-					}
-					else {
-						path = imageNameParts[0] + '-' + size +  '@2x.' + imageNameParts[1];
-					}
+				try {
+					$(el).each(function() {
+						if ($(this).data('image') !== undefined) {
+							var initialUrl = $(this).data('image');
+							var doctoredUrl = initialUrl.split('?');
+							var imageNameParts = doctoredUrl[0].split('.');
+							var path = '';
+							
+							// if no breakpoint size, default to image name / image name @2
+							//isRetina = true; // test retina on non-retina device
+							if (isRetina) {
+								if (size == null) {
+									path = imageNameParts[0] + '@2x.' + imageNameParts[1];
+								}
+								else {
+									path = imageNameParts[0] + '-' + size +  '@2x.' + imageNameParts[1];
+								}
+							}
+							else {
+								if (size == null) {
+									path = imageNameParts[0] + '.' + imageNameParts[1];
+								}
+								else {
+									path = imageNameParts[0] + '-' + size +  '.' + imageNameParts[1];
+								}
+							}
+							// only update image src if file exists
+							if (UrlExists(path))
+							{
+								$(this).attr('src', path);
+							}
+							else
+							{
+								$(this).attr('src', $(this).data('image'));
+							}
+						}
+					});
 				}
-				else {
-					if (size == null) {
-						path = imageNameParts[0] + '.' + imageNameParts[1];
-					}
-					else {
-						path = imageNameParts[0] + '-' + size +  '.' + imageNameParts[1];
-					}
+				catch (ex) {
+					//console.log(ex);
 				}
-				$(el).attr('src', path);
 			}
-			return this;
 		};
 	});
+	
+	function UrlExists(url)
+	{
+		var http = new XMLHttpRequest();
+		http.open('HEAD', url, false);
+		http.send();
+		return http.status!=404;
+	}
 })(jQuery);
 
 

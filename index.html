@@ -6,17 +6,16 @@
 	<title>imgResponsive.js</title>
 	<style>
 		body { margin: 0; text-align:center; }
-		
-		img { width:100%; height:auto;}
-		
+		img { width:100%; height:auto; }		
 	</style>
 </head>
 <body>
-	<img src="img/blank.gif" data-image="img/bunny.png" alt="text" class="instance1" />
-	<img src="img/blank.gif" data-image="img/flowers.png" alt="text" class="instance2" />
-	<img src="img/blank.gif" data-image="img/bunny.png" alt="text" class="instance3" />
+	<!-- so that the html validates, we use a placeholder image, like a 1x2px blank.gif -->
 	<!-- for IE8 and up, can use inline binary instead of blank.gif file if desired
 	<img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw%3D%3D" data-image="img/bunny.png" alt="text" class="instance1" />-->
+	<img src="img/blank.gif" data-image="img/bunny.png?width=732&height=270&ext=.png" alt="text" class="instance1" />
+	<img src="img/blank.gif" data-image="img/flowers.png?width=732&height=270&ext=.png" alt="text" class="instance2" />
+	<img src="img/blank.gif" data-image="img/bunny.png?width=732&height=270&ext=.png" alt="text" class="instance3" />
 
 	<script src="js/vendor/jquery-1.9.1.min.js"></script>
 	<script src="js/imgResponsive.min.js"></script>
@@ -25,7 +24,9 @@
 			$(function() {
 
 				/*
-					1. Basic use does retina detection, and swaps image out for @2x version.
+					1. Basic use does basic retina detection, and swaps image out for @2x version, named the same, but with "@2x" added before the extension.
+					
+					Example: bunny.png / bunny@2x.png
 				*/		
 				$('.instance1').imgResponsive();
 
@@ -33,6 +34,10 @@
 					2. You can pass an array of breakpoint objects (in jRespond syntax) to swap out image versions at various times.
 				 	So you can have a tiny image for handheld, larger for tablet, and much larger for desktop, etc.
 				 	Each of these versions will load an @2x version if the device is retina, also.
+
+				 	Example:	bunny-handheld.png / bunny-handheld@2x.png
+				 				bunny-tablet.png / bunny-tablet@2x.png
+				 				bunny-desktop.png / bunny-desktop@2x.png
 				*/
 				$('.instance2').imgResponsive({
 					breakpoints: [{

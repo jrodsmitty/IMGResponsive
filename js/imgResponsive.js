@@ -7,7 +7,7 @@
 			};
 			var elems = this;
 			var settings = $.extend(defaults, options);
-			var isRetina = window.devicePixelRatio > 1.4;
+			var isRetina = window.devicePixelRatio >= 1.4;
 		    var jRes = jRespond(settings.breakpoints);
 			
 			// if no breakpoints, just check for retina or not
